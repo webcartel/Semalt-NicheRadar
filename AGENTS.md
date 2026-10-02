@@ -46,6 +46,10 @@ npm run probe      # node scripts/freeserp-probe.mjs — run BEFORE UI work (SPE
 - API defaults: `sort=relevance`, `order=desc`, `real_site=1`.
   `ai=1` composes with `ai_startups=1`; `from_date/to_date` filter `went_live`;
   inverted date range returns `total: 0`, not an error.
+- Browser `fetch` to the upstream is blocked: it answers with a duplicated
+  `Access-Control-Allow-Origin: *, *` header. The app calls same-origin
+  `buildProxyUrl()` → Nitro `server/api/freeserp.get.ts` (pure pass-through,
+  no DB/auth). Direct `buildSitesUrl()` is for server/scripts only.
 
 ## Architecture
 

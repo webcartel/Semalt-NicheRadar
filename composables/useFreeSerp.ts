@@ -1,4 +1,4 @@
-import { buildSitesUrl, type SitesQuery } from '../services/freeserp'
+import { buildProxyUrl, type SitesQuery } from '../services/freeserp'
 import type { FreeSerpResponse } from '../types/freeserp'
 import { cacheGet, cacheSet } from './useSessionCache'
 
@@ -29,7 +29,7 @@ function release(): void {
 }
 
 async function fetchSites(params: SitesQuery): Promise<FreeSerpResponse> {
-  const url = buildSitesUrl(params)
+  const url = buildProxyUrl(params)
   const cached = cacheGet<FreeSerpResponse>(url)
   if (cached) return cached
   await acquire()

@@ -8,6 +8,19 @@ import type { FreeSerpResponse } from '../types/freeserp'
 
 const FREESERP_BASE_URL = 'https://freeserp.ai/api.php'
 
+// Browser builds same-origin URLs (Nitro proxy in server/api/freeserp.get.ts)
+// because the upstream answers browser fetch with a duplicated
+// `Access-Control-Allow-Origin: *, *` header that browsers reject.
+// Server-side / scripts keep using FREESERP_BASE_URL directly (no CORS there).
+
+export function buildProxyUrl(params: SitesQuery): string {
+  const usp = new URLSearchParams()
+  for (const [k, v] of Object.entries(params)) {
+    if (v !== undefined && v !== null && v !== '') usp.set(k, String(v))
+  }
+  return `/api/freeserp?${usp.toString()}`
+}
+
 export interface SitesQuery {
   q?: string
   ai_startups?: 0 | 1

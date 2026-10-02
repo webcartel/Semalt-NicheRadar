@@ -40,6 +40,17 @@ Facts only. No assumptions. Endpoint: `https://freeserp.ai/api.php` (NOT freeser
 - Full field catalog: see MCP `freeserp_list_endpoints` / `freeserp_help`
   (sortable: relevance, dr, went_live, first_seen, …; size 1–100).
 
+## 2026-10-03 — browser CORS finding (verified in-app)
+
+- Upstream answers browser `fetch` with `Access-Control-Allow-Origin: *, *`
+  (duplicated) → browser blocks the response. SPEC §5 "CORS-open" assumption
+  does not hold as-is.
+- Fix: same-origin Nitro proxy `server/api/freeserp.get.ts` (pure pass-through).
+  Browser code uses `buildProxyUrl()`; direct `buildSitesUrl()` stays for
+  server/scripts. Verified end-to-end: "AI meeting notes" → 527 matching,
+  trend 18/509 (-96%), DR unknown 21, AI-built 76/527 (14%), 8 product cards,
+  zero console errors.
+
 ## 2026-10-02 — dead end (superseded)
 
 - `freeserp.com` is the WRONG host: `/api.php` → HTTP 403 challenge (Node and
