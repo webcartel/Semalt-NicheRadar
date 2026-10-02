@@ -13,6 +13,7 @@ export interface SitesQuery {
   ai_startups?: 0 | 1
   ai?: 0 | 1
   ai_categories?: string
+  ai_source?: string
   from_date?: string // YYYY-MM-DD
   to_date?: string
   dr_min?: number
