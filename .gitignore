@@ -1,0 +1,20 @@
+# Nuxt
+.nuxt/
+.output/
+.data/
+
+# Dependencies
+node_modules/
+
+# Logs
+*.log
+
+# OS / editor
+.DS_Store
+.idea/
+.vscode/*
+
+# Env (no secrets in MVP — API is keyless, but keep the rule)
+.env
+.env.*
+!.env.example
