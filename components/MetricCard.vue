@@ -5,7 +5,7 @@
       <div class="h-8 w-24 animate-pulse rounded-md bg-[#e8f1f7]" />
       <div class="h-4 w-32 animate-pulse rounded-md bg-[#e8f1f7]" />
     </div>
-    <p v-else-if="failed" class="mt-3 text-sm text-[#5b7186]">Some analytics could not be loaded.</p>
+    <p v-else-if="failed" class="mt-3 text-sm text-[#5b7186]">{{ t('common.analyticsFailed') }}</p>
     <div v-else class="mt-2">
       <div class="flex items-baseline gap-2">
         <slot />
@@ -18,6 +18,10 @@
 </template>
 
 <script setup lang="ts">
+import { useLocale } from '../composables/useLocale'
+
+const { t } = useLocale()
+
 defineProps<{
   label: string
   loading?: boolean

@@ -54,8 +54,8 @@
       <p class="text-center text-sm text-[#5b7186]">{{ t('search.loading') }}</p>
     </div>
 
-    <p v-if="radar.searchError.value" role="alert" class="mx-auto mt-12 max-w-2xl rounded-xl border border-rose-200 bg-rose-50 px-5 py-4 text-sm font-medium text-rose-700">
-      {{ radar.searchError.value }}
+    <p v-if="searchErrorText" role="alert" class="mx-auto mt-12 max-w-2xl rounded-xl border border-rose-200 bg-rose-50 px-5 py-4 text-sm font-medium text-rose-700">
+      {{ searchErrorText }}
     </p>
 
     <template v-if="hasResult">
@@ -155,6 +155,7 @@ const hasResult = computed(() => radar.matchingTotal.value !== null && !radar.se
 const emptyResult = computed(
   () => hasResult.value && radar.matchingTotal.value === 0,
 )
+const searchErrorText = computed(() => radar.searchError.value ? t(radar.searchError.value) : null)
 
 function onSubmit() {
   void radar.checkNiche(input.value)

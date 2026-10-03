@@ -31,10 +31,10 @@
         DR {{ product.dr }}
       </span>
       <span v-if="product.went_live" class="px-1 text-[#5b7186]">
-        Live since {{ formatMonth(product.went_live) }}
+        {{ t('product.liveSince') }} {{ formatMonth(product.went_live, tag) }}
       </span>
       <span v-if="product.ai_source" class="rounded-full bg-amber-100 px-2.5 py-1 font-semibold text-amber-800">
-        AI-built: {{ product.ai_source }}
+        {{ t('product.aiBuiltPrefix') }} {{ product.ai_source }}
       </span>
     </div>
     <a
@@ -43,7 +43,7 @@
       rel="noopener"
       class="mt-4 inline-flex items-center gap-1 text-sm font-bold text-[#0288d1] transition-colors hover:text-[#0277bd]"
     >
-      Open site
+      {{ t('product.open') }}
       <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
         <path d="M3 9 9 3M9 3H4.5M9 3v4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
       </svg>
@@ -54,8 +54,11 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import type { FreeSerpSiteResult } from '../types/freeserp'
+import { useLocale } from '../composables/useLocale'
+import { formatMonth } from '../utils/locale'
 
 const props = defineProps<{ product: FreeSerpSiteResult }>()
+const { t, tag } = useLocale()
 const showIcon = ref(true)
 
 const categories = computed(() => {
@@ -64,10 +67,4 @@ const categories = computed(() => {
   const arr = Array.isArray(v) ? v : [v]
   return arr.slice(0, 3)
 })
-
-function formatMonth(iso: string): string {
-  const d = new Date(`${iso}T00:00:00Z`)
-  if (Number.isNaN(d.getTime())) return iso
-  return d.toLocaleDateString('en-US', { month: 'short', year: 'numeric', timeZone: 'UTC' })
-}
 </script>

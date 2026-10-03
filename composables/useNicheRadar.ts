@@ -1,9 +1,10 @@
-import { ref } from 'vue'
+import { ref, type Ref } from 'vue'
 import { useFreeSerp } from './useFreeSerp'
 import { normalizeQuery } from '../utils/normalizeQuery'
 import { offsetWindows } from '../utils/dateRanges'
 import { aiBuiltShare, discoveryChange } from '../utils/metrics'
 import type { FreeSerpSiteResult } from '../types/freeserp'
+import type { I18nKey } from '../data/i18n/en'
 
 // Orchestrates the Idea Check flow (SPEC §§8–14).
 // SPEC §18: every block owns its loading state — a slow DR bucket
@@ -75,7 +76,7 @@ export function useNicheRadar() {
 
   // P0 — main result.
   const searching = ref(false)
-  const searchError = ref<string | null>(null)
+  const searchError: Ref<I18nKey | null> = ref(null)
   const matchingTotal = ref<number | null>(null)
   const products = ref<FreeSerpSiteResult[]>([])
 
@@ -189,7 +190,7 @@ export function useNicheRadar() {
       void runDr(q, matchRes.total)
       void runAiBuilt(q, matchRes.total)
     } catch {
-      searchError.value = 'FreeSerp is temporarily unavailable. Please try again.'
+      searchError.value = 'errors.unavailable'
     } finally {
       searching.value = false
     }
