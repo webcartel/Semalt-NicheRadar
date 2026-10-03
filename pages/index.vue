@@ -73,10 +73,10 @@
 
       <section class="mt-8 grid gap-4 md:grid-cols-3">
         <MetricCard :label="t('metrics.newDetected')" :loading="radar.trendLoading.value" :failed="radar.trendError.value">
-          <span class="tnum text-3xl font-extrabold text-[#101d2d]">{{ radar.currentPeriod.value ?? '—' }}</span>
+          <span class="tnum text-3xl font-extrabold text-[#101d2d]">{{ radar.currentPeriod.value === null ? '—' : formatInt(radar.currentPeriod.value, tag) }}</span>
           <span class="text-sm text-[#8aa0b2]">{{ t('metrics.lastPeriod') }}</span>
           <template #sub>
-            {{ t('metrics.previous') }} {{ radar.previousPeriod.value ?? '—' }} ·
+            {{ t('metrics.previous') }} {{ radar.previousPeriod.value === null ? '—' : formatInt(radar.previousPeriod.value, tag) }} ·
             {{ t('metrics.discovery') }} <DeltaPill :value="radar.trendChange.value" />
           </template>
         </MetricCard>
@@ -103,7 +103,7 @@
             <span class="block space-y-1 pt-1">
               <span v-for="s in radar.aiBuiltBySource.value" :key="s.source" class="flex items-center justify-between gap-4">
                 <span>{{ s.source }}</span>
-                <span class="tnum font-bold text-[#101d2d]">{{ s.total }}</span>
+                <span class="tnum font-bold text-[#101d2d]">{{ s.total === null ? '—' : formatInt(s.total, tag) }}</span>
               </span>
             </span>
           </template>

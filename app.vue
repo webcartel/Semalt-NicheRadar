@@ -31,7 +31,7 @@ useHead(() => ({
             {{ t('header.badge') }}
           </span>
           <span class="h-2 w-2 rounded-full bg-emerald-500" title="API status: operational" />
-          <div role="group" aria-label="Language" class="flex items-center overflow-hidden rounded-full border border-[#dce7f0] text-[11px] font-bold">
+          <div role="group" :aria-label="t('header.langLabel')" class="flex items-center overflow-hidden rounded-full border border-[#dce7f0] text-[11px] font-bold">
             <button
               v-for="l in (['en', 'uk'] as const)"
               :key="l"
