@@ -2,12 +2,18 @@
 
 :root {
   --font-sans: 'Plus Jakarta Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  /* Semalt-derived palette (sampled live 2026-10-03) */
+  --brand: #0288d1;
+  --brand-hover: #0277bd;
+  --brand-soft: #e8f1f7;
+  --ink: #101d2d;
+  --card-border: #dce7f0;
 }
 
 body {
   font-family: var(--font-sans);
-  background-color: #fafafa;
-  color: #09090b;
+  background-color: #f7fbfe;
+  color: var(--ink);
   -webkit-font-smoothing: antialiased;
 }
 
@@ -16,13 +22,34 @@ body {
 }
 
 ::selection {
-  background-color: #dbeafe;
+  background-color: #b3e0f5;
 }
 
 :focus-visible {
-  outline: 2px solid #2563eb;
+  outline: 2px solid var(--brand);
   outline-offset: 2px;
   border-radius: 4px;
+}
+
+/* Semalt-style hero: faint blueprint grid + soft blue radial glow */
+.hero-grid {
+  background-image:
+    linear-gradient(rgba(232, 241, 247, 0.56) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(232, 241, 247, 0.56) 1px, transparent 1px),
+    radial-gradient(circle at 75% 30%, rgba(2, 136, 209, 0.13), transparent 30%),
+    linear-gradient(#ffffff, #f7fbfe);
+  background-size:
+    44px 44px,
+    44px 44px,
+    100% 100%,
+    100% 100%;
+}
+
+.card-soft {
+  background: #ffffff;
+  border: 1px solid var(--card-border);
+  border-radius: 18px;
+  box-shadow: rgba(38, 78, 104, 0.06) 0 12px 40px;
 }
 
 @media (prefers-reduced-motion: reduce) {

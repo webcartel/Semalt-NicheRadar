@@ -1,7 +1,7 @@
 <template>
   <main class="mx-auto max-w-[1200px] px-6 pb-16">
     <div class="pt-8">
-      <NuxtLink to="/" class="inline-flex items-center gap-1.5 text-sm font-medium text-zinc-500 transition-colors hover:text-zinc-900">
+      <NuxtLink to="/" class="inline-flex items-center gap-1.5 text-sm font-bold text-[#0288d1] transition-colors hover:text-[#0277bd]">
         <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
           <path d="M9 2.5 4.5 7 9 11.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
         </svg>
@@ -9,47 +9,49 @@
       </NuxtLink>
     </div>
 
-    <h1 class="mt-3 text-3xl font-extrabold tracking-tight sm:text-4xl">{{ category }}</h1>
+    <h1 class="mt-3 text-3xl font-extrabold tracking-tight text-[#101d2d] sm:text-4xl">{{ category }}</h1>
 
-    <p v-if="invalid" class="mt-8 rounded-xl border border-dashed border-zinc-300 bg-white px-5 py-8 text-center text-sm text-zinc-500">
+    <p v-if="invalid" class="mt-8 rounded-2xl border border-dashed border-[#c5d8e6] bg-white px-5 py-8 text-center text-sm font-medium text-[#5b7186]">
       Unknown niche. Categories come from the live FreeSerp taxonomy.
     </p>
     <div v-else-if="loading" class="mt-8 space-y-3">
-      <div class="h-14 w-40 animate-pulse rounded-md bg-zinc-200/70" />
+      <div class="h-14 w-40 animate-pulse rounded-md bg-[#e8f1f7]" />
       <div class="grid gap-4 sm:grid-cols-2">
-        <div v-for="i in 2" :key="i" class="h-32 animate-pulse rounded-2xl bg-zinc-200/50" />
+        <div v-for="i in 2" :key="i" class="h-32 animate-pulse rounded-2xl bg-[#e8f1f7]/70" />
       </div>
-      <p class="text-sm text-zinc-400">Searching FreeSerp...</p>
+      <p class="text-sm text-[#5b7186]">Searching FreeSerp...</p>
     </div>
-    <p v-else-if="error" role="alert" class="mt-8 rounded-xl border border-red-200 bg-red-50 px-5 py-4 text-sm text-red-700">
+    <p v-else-if="error" role="alert" class="mt-8 rounded-xl border border-rose-200 bg-rose-50 px-5 py-4 text-sm font-medium text-rose-700">
       FreeSerp is temporarily unavailable. Please try again.
     </p>
 
     <template v-else>
       <div class="mt-4 flex items-end gap-3">
-        <p class="tnum text-6xl font-extrabold tracking-tight">{{ total }}</p>
-        <p class="pb-2 text-sm text-zinc-500">matching<br />AI products</p>
+        <p class="tnum bg-gradient-to-r from-[#101d2d] to-[#0288d1] bg-clip-text text-6xl font-extrabold tracking-tight text-transparent sm:text-7xl">
+          {{ total }}
+        </p>
+        <p class="pb-2 text-sm font-medium text-[#5b7186]">matching<br />AI products</p>
       </div>
 
       <div class="mt-8 grid gap-4 sm:grid-cols-2">
         <MetricCard label="Newly detected">
-          <span class="tnum text-3xl font-bold">{{ current }}</span>
-          <span class="text-sm text-zinc-400">last period</span>
+          <span class="tnum text-3xl font-extrabold text-[#101d2d]">{{ current }}</span>
+          <span class="text-sm text-[#8aa0b2]">last period</span>
           <template #sub>
             Previous {{ previous }} ·
             New-site discovery <DeltaPill :value="change" />
           </template>
         </MetricCard>
         <MetricCard label="AI-built signals">
-          <span class="tnum text-3xl font-bold">{{ formatPct(aiBuiltPct) }}</span>
-          <span class="tnum text-sm text-zinc-400">{{ aiBuilt }} / {{ total }}</span>
+          <span class="tnum text-3xl font-extrabold text-[#101d2d]">{{ formatPct(aiBuiltPct) }}</span>
+          <span class="tnum text-sm text-[#8aa0b2]">{{ aiBuilt }} / {{ total }}</span>
         </MetricCard>
       </div>
 
-      <section class="mt-12">
+      <section class="mt-14">
         <div class="flex items-baseline justify-between">
-          <h2 class="text-xl font-bold tracking-tight">Top sites</h2>
-          <p class="text-xs text-zinc-400">Top 8 by relevance</p>
+          <h2 class="text-xl font-extrabold tracking-tight text-[#101d2d]">Top sites</h2>
+          <p class="text-xs font-medium text-[#5b7186]">Top 8 by relevance</p>
         </div>
         <div class="mt-5 grid gap-4 sm:grid-cols-2">
           <ProductCard v-for="p in products" :key="p.domain" :product="p" />

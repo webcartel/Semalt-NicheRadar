@@ -1,24 +1,24 @@
 <template>
-  <section class="mt-14">
+  <section class="mt-4">
     <div class="flex items-baseline justify-between">
-      <h2 class="text-xl font-bold tracking-tight">Market Pulse</h2>
-      <p class="text-xs text-zinc-400">FreeSerp index stats</p>
+      <h2 class="text-xl font-extrabold tracking-tight text-[#101d2d]">Market Pulse</h2>
+      <p class="text-xs font-medium text-[#5b7186]">FreeSerp index stats</p>
     </div>
     <div v-if="loading" class="mt-5 grid gap-4 sm:grid-cols-3">
-      <div v-for="i in 3" :key="i" class="h-28 animate-pulse rounded-2xl bg-zinc-200/50" />
+      <div v-for="i in 3" :key="i" class="h-28 animate-pulse rounded-2xl bg-[#e8f1f7]/70" />
     </div>
-    <p v-else-if="failed" class="mt-5 text-sm text-zinc-400">Some analytics could not be loaded.</p>
+    <p v-else-if="failed" class="mt-5 text-sm text-[#5b7186]">Some analytics could not be loaded.</p>
     <div v-else class="mt-5 grid gap-4 sm:grid-cols-3">
       <MetricCard label="AI startups detected today">
-        <span class="tnum text-3xl font-bold">{{ today ?? '—' }}</span>
+        <span class="tnum text-3xl font-extrabold text-[#101d2d]">{{ today ?? '—' }}</span>
       </MetricCard>
       <MetricCard label="AI startups total">
-        <span class="tnum text-3xl font-bold">{{ total ?? '—' }}</span>
+        <span class="tnum text-3xl font-extrabold text-[#101d2d]">{{ total ?? '—' }}</span>
       </MetricCard>
       <MetricCard label="Top AI niches">
-        <ul class="space-y-1.5 pt-1 text-sm font-medium">
+        <ul class="space-y-1.5 pt-1 text-sm font-semibold text-[#101d2d]">
           <li v-for="(c, i) in topCategories" :key="c" class="flex items-center gap-2.5">
-            <span class="tnum flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-zinc-100 text-[11px] font-bold text-zinc-500">{{ i + 1 }}</span>
+            <span class="tnum flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-[#0288d1] text-[11px] font-bold text-white">{{ i + 1 }}</span>
             {{ c }}
           </li>
         </ul>

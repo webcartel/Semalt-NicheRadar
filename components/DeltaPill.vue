@@ -1,6 +1,6 @@
 <template>
   <span
-    class="tnum inline-flex items-center rounded-full px-2 py-0.5 text-xs font-semibold"
+    class="tnum inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-bold"
     :class="tone"
   >
     {{ text }}
@@ -18,9 +18,9 @@ const text = computed(() => {
 })
 
 const tone = computed(() => {
-  if (props.value === null) return 'bg-zinc-100 text-zinc-500'
-  if (props.value > 0) return 'bg-emerald-50 text-emerald-700'
-  if (props.value < 0) return 'bg-rose-50 text-rose-700'
-  return 'bg-zinc-100 text-zinc-500'
+  if (props.value === null) return 'bg-slate-100 text-slate-500'
+  if (props.value > 0) return 'bg-emerald-100 text-emerald-700'
+  if (props.value < 0) return 'bg-rose-100 text-rose-700'
+  return 'bg-slate-100 text-slate-500'
 })
 </script>
