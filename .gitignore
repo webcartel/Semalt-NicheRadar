@@ -27,4 +27,7 @@ node_modules/
 # Local git worktrees (isolated implementation workspaces)
 .worktrees/
 
+# Superpowers scratch workspaces (ledger, briefs, review packages)
+.superpowers/
+
 .opencode
