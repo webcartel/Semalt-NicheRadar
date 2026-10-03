@@ -1,12 +1,12 @@
 <template>
-  <section class="hero-grid -mx-6 -mt-px px-6 pb-24 pt-16 sm:pt-20">
+  <section class="hero-grid sm:-mx-6 -mt-px px-6 pb-24 pt-16 sm:pt-20">
     <div class="mx-auto max-w-2xl text-center">
       <p class="inline-flex items-center gap-1.5 rounded-full border border-[#dce7f0] bg-white/80 px-3.5 py-1.5 text-xs font-semibold text-[#0277bd] shadow-[rgba(2,136,209,0.08)_0_4px_12px]">
         <span class="h-1.5 w-1.5 rounded-full bg-emerald-500" />
         Live FreeSerp discovery data
       </p>
       <h1 class="mt-5 text-4xl font-extrabold tracking-tight text-[#101d2d] sm:text-[52px] sm:leading-[1.08]">
-        What is happening in<br class="hidden sm:block" />
+        What is happening in <br class="hidden sm:block" />
         <span class="text-[#0288d1]">your AI niche</span> right now?
       </h1>
       <p class="mx-auto mt-4 max-w-xl text-base text-[#42566b] sm:text-lg">
@@ -23,7 +23,7 @@
           type="text"
           placeholder="Try: AI meeting notes"
           aria-label="AI niche to check"
-          class="h-13 flex-1 rounded-xl border border-[#dce7f0] bg-white px-4 text-[15px] shadow-[rgba(26,57,78,0.08)_0_8px_24px] outline-none transition-colors placeholder:text-[#8aa0b2] focus:border-[#0288d1]"
+          class="h-13 sm:flex-1 rounded-xl border border-[#dce7f0] bg-white px-4 text-[15px] shadow-[rgba(26,57,78,0.08)_0_8px_24px] outline-none transition-colors placeholder:text-[#8aa0b2] focus:border-[#0288d1]"
         />
         <button
           type="submit"
@@ -65,7 +65,7 @@
           Results for <span class="font-bold text-[#101d2d]">“{{ radar.submittedQuery.value }}”</span>
         </p>
         <div class="mt-2 flex items-end gap-3">
-          <p class="tnum bg-gradient-to-r from-[#101d2d] to-[#0288d1] bg-clip-text text-6xl font-extrabold tracking-tight text-transparent sm:text-7xl">
+          <p class="tnum bg-gradient-to-r to-[#101d2d] from-[#0288d1] bg-clip-text text-6xl font-extrabold tracking-tight text-transparent sm:text-7xl">
             {{ radar.matchingTotal.value }}
           </p>
           <p class="pb-2 text-sm font-medium text-[#5b7186]">matching<br />AI products</p>
@@ -119,7 +119,7 @@
         <p v-if="emptyResult" class="mt-3 rounded-2xl border border-dashed border-[#c5d8e6] bg-white px-5 py-8 text-center text-sm font-medium text-[#5b7186]">
           No AI products found for this query. Try a broader phrase.
         </p>
-        <div v-else class="mt-5 grid gap-4 sm:grid-cols-2">
+        <div v-else class="mt-5 flex flex-col sm:grid gap-4 sm:grid-cols-2">
           <ProductCard v-for="p in radar.products.value" :key="p.domain" :product="p" />
         </div>
       </section>

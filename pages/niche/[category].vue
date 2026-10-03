@@ -27,7 +27,7 @@
 
     <template v-else>
       <div class="mt-4 flex items-end gap-3">
-        <p class="tnum bg-gradient-to-r from-[#101d2d] to-[#0288d1] bg-clip-text text-6xl font-extrabold tracking-tight text-transparent sm:text-7xl">
+        <p class="tnum bg-gradient-to-r to-[#101d2d] from-[#0288d1] bg-clip-text text-6xl font-extrabold tracking-tight text-transparent sm:text-7xl">
           {{ total }}
         </p>
         <p class="pb-2 text-sm font-medium text-[#5b7186]">matching<br />AI products</p>
@@ -53,7 +53,7 @@
           <h2 class="text-xl font-extrabold tracking-tight text-[#101d2d]">Top sites</h2>
           <p class="text-xs font-medium text-[#5b7186]">Top 8 by relevance</p>
         </div>
-        <div class="mt-5 grid gap-4 sm:grid-cols-2">
+        <div class="mt-5 flex flex-col sm:grid gap-4 sm:grid-cols-2">
           <ProductCard v-for="p in products" :key="p.domain" :product="p" />
         </div>
       </section>
