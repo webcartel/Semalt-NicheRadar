@@ -1,23 +1,28 @@
 <template>
-  <section class="mt-12">
-    <h2 class="text-lg font-semibold">Market Pulse</h2>
-    <p v-if="loading" class="mt-4 text-sm text-neutral-400">Loading...</p>
-    <p v-else-if="failed" class="mt-4 text-sm text-neutral-400">Some analytics could not be loaded.</p>
-    <div v-else class="mt-4 grid gap-4 sm:grid-cols-3">
-      <div class="rounded-xl border border-neutral-200 p-4">
-        <p class="text-xs uppercase tracking-wide text-neutral-400">AI startups detected today</p>
-        <p class="mt-1 text-3xl font-semibold">{{ today ?? '—' }}</p>
-      </div>
-      <div class="rounded-xl border border-neutral-200 p-4">
-        <p class="text-xs uppercase tracking-wide text-neutral-400">AI startups total</p>
-        <p class="mt-1 text-3xl font-semibold">{{ total ?? '—' }}</p>
-      </div>
-      <div class="rounded-xl border border-neutral-200 p-4">
-        <p class="text-xs uppercase tracking-wide text-neutral-400">Top AI niches</p>
-        <ul class="mt-1 space-y-0.5 text-sm">
-          <li v-for="c in topCategories" :key="c">{{ c }}</li>
+  <section class="mt-14">
+    <div class="flex items-baseline justify-between">
+      <h2 class="text-xl font-bold tracking-tight">Market Pulse</h2>
+      <p class="text-xs text-zinc-400">FreeSerp index stats</p>
+    </div>
+    <div v-if="loading" class="mt-5 grid gap-4 sm:grid-cols-3">
+      <div v-for="i in 3" :key="i" class="h-28 animate-pulse rounded-2xl bg-zinc-200/50" />
+    </div>
+    <p v-else-if="failed" class="mt-5 text-sm text-zinc-400">Some analytics could not be loaded.</p>
+    <div v-else class="mt-5 grid gap-4 sm:grid-cols-3">
+      <MetricCard label="AI startups detected today">
+        <span class="tnum text-3xl font-bold">{{ today ?? '—' }}</span>
+      </MetricCard>
+      <MetricCard label="AI startups total">
+        <span class="tnum text-3xl font-bold">{{ total ?? '—' }}</span>
+      </MetricCard>
+      <MetricCard label="Top AI niches">
+        <ul class="space-y-1.5 pt-1 text-sm font-medium">
+          <li v-for="(c, i) in topCategories" :key="c" class="flex items-center gap-2.5">
+            <span class="tnum flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-zinc-100 text-[11px] font-bold text-zinc-500">{{ i + 1 }}</span>
+            {{ c }}
+          </li>
         </ul>
-      </div>
+      </MetricCard>
     </div>
   </section>
 </template>
@@ -25,6 +30,7 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 import { useFreeSerp } from '../composables/useFreeSerp'
+import MetricCard from './MetricCard.vue'
 
 // Uses only fields the live stats response actually provides (SPEC §17):
 // ai_startups.today, ai_startups.total, top_ai_categories.

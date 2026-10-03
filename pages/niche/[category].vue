@@ -1,50 +1,60 @@
 <template>
-  <main class="mx-auto max-w-[1200px] px-6 py-12">
-    <NuxtLink to="/" class="text-sm text-neutral-500 underline">← Back to radar</NuxtLink>
-    <h1 class="mt-4 text-3xl font-semibold tracking-tight">{{ category }}</h1>
+  <main class="mx-auto max-w-[1200px] px-6 pb-16">
+    <div class="pt-8">
+      <NuxtLink to="/" class="inline-flex items-center gap-1.5 text-sm font-medium text-zinc-500 transition-colors hover:text-zinc-900">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+          <path d="M9 2.5 4.5 7 9 11.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+        Back to radar
+      </NuxtLink>
+    </div>
 
-    <p v-if="invalid" class="mt-8 text-sm text-neutral-500">
+    <h1 class="mt-3 text-3xl font-extrabold tracking-tight sm:text-4xl">{{ category }}</h1>
+
+    <p v-if="invalid" class="mt-8 rounded-xl border border-dashed border-zinc-300 bg-white px-5 py-8 text-center text-sm text-zinc-500">
       Unknown niche. Categories come from the live FreeSerp taxonomy.
     </p>
-    <p v-else-if="loading" class="mt-8 text-sm text-neutral-500">Searching FreeSerp...</p>
-    <p v-else-if="error" class="mt-8 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+    <div v-else-if="loading" class="mt-8 space-y-3">
+      <div class="h-14 w-40 animate-pulse rounded-md bg-zinc-200/70" />
+      <div class="grid gap-4 sm:grid-cols-2">
+        <div v-for="i in 2" :key="i" class="h-32 animate-pulse rounded-2xl bg-zinc-200/50" />
+      </div>
+      <p class="text-sm text-zinc-400">Searching FreeSerp...</p>
+    </div>
+    <p v-else-if="error" role="alert" class="mt-8 rounded-xl border border-red-200 bg-red-50 px-5 py-4 text-sm text-red-700">
       FreeSerp is temporarily unavailable. Please try again.
     </p>
 
     <template v-else>
-      <p class="mt-6 text-5xl font-semibold">{{ total }}</p>
-      <p class="mt-1 text-sm text-neutral-500">matching AI products</p>
-
-      <div class="mt-6 grid gap-4 sm:grid-cols-2">
-        <div class="rounded-xl border border-neutral-200 p-4">
-          <p class="text-xs uppercase tracking-wide text-neutral-400">Newly detected</p>
-          <p class="mt-2 text-sm">Last period <span class="font-semibold">{{ current }}</span></p>
-          <p class="text-sm">Previous <span class="font-semibold">{{ previous }}</span></p>
-          <p class="mt-1 text-sm">
-            New-site discovery <span class="font-semibold">{{ formatChange(change) }}</span>
-          </p>
-        </div>
-        <div class="rounded-xl border border-neutral-200 p-4">
-          <p class="text-xs uppercase tracking-wide text-neutral-400">AI-built signals</p>
-          <p class="mt-2 text-sm"><span class="font-semibold">{{ aiBuilt }} / {{ total }}</span></p>
-          <p class="text-2xl font-semibold">{{ formatPct(aiBuiltPct) }}</p>
-        </div>
+      <div class="mt-4 flex items-end gap-3">
+        <p class="tnum text-6xl font-extrabold tracking-tight">{{ total }}</p>
+        <p class="pb-2 text-sm text-zinc-500">matching<br />AI products</p>
       </div>
 
-      <h2 class="mt-10 text-lg font-semibold">Top sites</h2>
-      <div class="mt-4 grid gap-4 sm:grid-cols-2">
-        <article v-for="p in products" :key="p.domain" class="rounded-xl border border-neutral-200 p-4">
-          <p class="font-medium">{{ p.title }}</p>
-          <p class="text-xs text-neutral-500">{{ p.domain }}</p>
-          <p v-if="p.ai_summary" class="mt-2 line-clamp-3 text-sm text-neutral-600">{{ p.ai_summary }}</p>
-          <div class="mt-3 flex flex-wrap gap-2 text-xs text-neutral-500">
-            <span v-if="p.dr != null">DR {{ p.dr }}</span>
-            <span v-if="p.went_live">Live since {{ formatMonth(p.went_live) }}</span>
-            <span v-if="p.ai_source">AI-built: {{ p.ai_source }}</span>
-          </div>
-          <a :href="p.url" target="_blank" rel="noopener" class="mt-3 inline-block text-sm font-medium underline">Open site</a>
-        </article>
+      <div class="mt-8 grid gap-4 sm:grid-cols-2">
+        <MetricCard label="Newly detected">
+          <span class="tnum text-3xl font-bold">{{ current }}</span>
+          <span class="text-sm text-zinc-400">last period</span>
+          <template #sub>
+            Previous {{ previous }} ·
+            New-site discovery <DeltaPill :value="change" />
+          </template>
+        </MetricCard>
+        <MetricCard label="AI-built signals">
+          <span class="tnum text-3xl font-bold">{{ formatPct(aiBuiltPct) }}</span>
+          <span class="tnum text-sm text-zinc-400">{{ aiBuilt }} / {{ total }}</span>
+        </MetricCard>
       </div>
+
+      <section class="mt-12">
+        <div class="flex items-baseline justify-between">
+          <h2 class="text-xl font-bold tracking-tight">Top sites</h2>
+          <p class="text-xs text-zinc-400">Top 8 by relevance</p>
+        </div>
+        <div class="mt-5 grid gap-4 sm:grid-cols-2">
+          <ProductCard v-for="p in products" :key="p.domain" :product="p" />
+        </div>
+      </section>
     </template>
   </main>
 </template>
@@ -57,6 +67,9 @@ import { AI_CATEGORIES } from '../../data/aiCategories'
 import { offsetWindows } from '../../utils/dateRanges'
 import { aiBuiltShare, discoveryChange } from '../../utils/metrics'
 import type { FreeSerpSiteResult } from '../../types/freeserp'
+import MetricCard from '../../components/MetricCard.vue'
+import DeltaPill from '../../components/DeltaPill.vue'
+import ProductCard from '../../components/ProductCard.vue'
 
 const route = useRoute()
 const category = computed(() => String(route.params.category ?? ''))
@@ -72,20 +85,9 @@ const aiBuilt = ref<number | null>(null)
 const aiBuiltPct = ref<number | null>(null)
 const products = ref<FreeSerpSiteResult[]>([])
 
-function formatChange(v: number | null): string {
-  if (v === null) return '—'
-  return `${v >= 0 ? '+' : ''}${v.toFixed(0)}%`
-}
-
 function formatPct(v: number | null): string {
   if (v === null) return '—'
   return `${v.toFixed(0)}%`
-}
-
-function formatMonth(iso: string): string {
-  const d = new Date(`${iso}T00:00:00Z`)
-  if (Number.isNaN(d.getTime())) return iso
-  return d.toLocaleDateString('en-US', { month: 'short', year: 'numeric', timeZone: 'UTC' })
 }
 
 onMounted(async () => {
