@@ -1,14 +1,14 @@
 <template>
   <section class="mt-14">
     <div class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
-      <h2 class="text-xl font-extrabold tracking-tight text-[#101d2d]">AI Market Heatmap</h2>
-      <p class="text-xs font-medium text-[#5b7186]">All-time totals per niche</p>
+      <h2 class="text-xl font-extrabold tracking-tight text-[#101d2d]">{{ t('heatmap.title') }}</h2>
+      <p class="text-xs font-medium text-[#5b7186]">{{ t('heatmap.sub') }}</p>
     </div>
-    <p class="mt-1 text-[13px] text-[#5b7186]">Relative niche size and AI-built share.</p>
+    <p class="mt-1 text-[13px] text-[#5b7186]">{{ t('heatmap.desc') }}</p>
     <div v-if="loading" class="mt-5 space-y-2">
       <div v-for="i in 6" :key="i" class="h-11 animate-pulse rounded-xl bg-[#e8f1f7]/70" />
     </div>
-    <p v-else-if="failed" class="mt-5 text-sm text-[#5b7186]">Some analytics could not be loaded.</p>
+    <p v-else-if="failed" class="mt-5 text-sm text-[#5b7186]">{{ t('common.analyticsFailed') }}</p>
     <div v-else class="mt-5">
       <!-- Mobile: stacked cards (no table squeeze, no horizontal scroll) -->
       <div class="space-y-2.5 sm:hidden">
@@ -28,8 +28,8 @@
             <span class="h-2 min-w-0 flex-1 overflow-hidden rounded-full bg-[#e8f1f7]">
               <span class="block h-full rounded-full bg-gradient-to-r from-[#0288d1] to-[#4fc3f7]" :style="{ width: barPct(row.total) + '%' }" />
             </span>
-            <span class="tnum shrink-0 whitespace-nowrap text-[13px] font-extrabold text-[#101d2d]">{{ row.total ?? '—' }}</span>
-            <span class="shrink-0 whitespace-nowrap text-[11px] font-semibold text-[#5b7186]">AI products</span>
+            <span class="tnum shrink-0 whitespace-nowrap text-[13px] font-extrabold text-[#101d2d]">{{ row.total === null ? '—' : formatInt(row.total, tag) }}</span>
+            <span class="shrink-0 whitespace-nowrap text-[11px] font-semibold text-[#5b7186]">{{ t('heatmap.aiProducts') }}</span>
           </span>
         </NuxtLink>
       </div>
@@ -38,9 +38,9 @@
         <table class="w-full text-sm">
           <thead>
             <tr class="border-b border-[#e8f1f7] bg-[#f7fbfe] text-left text-[11px] font-bold uppercase tracking-widest text-[#5b7186]">
-              <th scope="col" class="whitespace-nowrap px-5 py-3 font-bold">Niche</th>
-              <th scope="col" class="whitespace-nowrap px-5 py-3 text-right font-bold">AI products</th>
-              <th scope="col" class="whitespace-nowrap px-5 py-3 text-right font-bold">AI-built</th>
+              <th scope="col" class="whitespace-nowrap px-5 py-3 font-bold">{{ t('heatmap.niche') }}</th>
+              <th scope="col" class="whitespace-nowrap px-5 py-3 text-right font-bold">{{ t('heatmap.aiProducts') }}</th>
+              <th scope="col" class="whitespace-nowrap px-5 py-3 text-right font-bold">{{ t('heatmap.aiBuilt') }}</th>
             </tr>
           </thead>
           <tbody>
@@ -55,7 +55,7 @@
                 </NuxtLink>
                 <span class="ml-3 inline-block h-2 max-w-full shrink-0 rounded-full bg-gradient-to-r from-[#0288d1] to-[#4fc3f7] align-middle" :style="{ width: barWidth(row.total) + 'px' }" />
               </td>
-              <td class="tnum whitespace-nowrap px-5 py-3.5 text-right font-extrabold text-[#101d2d]">{{ row.total ?? '—' }}</td>
+              <td class="tnum whitespace-nowrap px-5 py-3.5 text-right font-extrabold text-[#101d2d]">{{ row.total === null ? '—' : formatInt(row.total, tag) }}</td>
               <td class="tnum whitespace-nowrap px-5 py-3.5 text-right font-bold text-[#0277bd]">{{ formatPct(row.aiBuiltPct) }}</td>
             </tr>
           </tbody>
@@ -67,6 +67,8 @@
 
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue'
+import { useLocale } from '../composables/useLocale'
+import { formatInt } from '../utils/locale'
 import { useFreeSerp } from '../composables/useFreeSerp'
 import { HEATMAP_CATEGORIES } from '../data/aiCategories'
 import { aiBuiltShare } from '../utils/metrics'
@@ -85,6 +87,8 @@ interface Row {
 const rows = ref<Row[]>([])
 const loading = ref(true)
 const failed = ref(false)
+
+const { t, tag } = useLocale()
 
 function formatPct(v: number | null): string {
   if (v === null) return '—'
