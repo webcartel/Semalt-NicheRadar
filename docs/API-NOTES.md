@@ -40,8 +40,17 @@ Facts only. No assumptions. Endpoint: `https://freeserp.ai/api.php` (NOT freeser
 - Full field catalog: see MCP `freeserp_list_endpoints` / `freeserp_help`
   (sortable: relevance, dr, went_live, first_seen, …; size 1–100).
 
-## 2026-10-03 — browser CORS finding (verified in-app)
+## 2026-10-03 — AI-enrichment lag cliff (heatmap probe)
 
+- Category-filtered `went_live` counts collapse after ~2026-08-15
+  (`Code & Dev Tools`, ai_startups=1): Aug 01–08 → 3369; Aug 08–15 → 4753;
+  Aug 15–22 → 130; Aug 22–29 → 142; Aug 29–Sep 05 → 154; Sep 05–12 → 61;
+  Sep 26–Oct 03 → 0. Unfiltered category total is 8283 (matches stats).
+- Global `new.last_7d` is 233876, so `went_live` itself flows — the lag is in
+  AI enrichment (`ai_categories` assignment), exactly the SPEC §11 caveat.
+- Consequence: heatmap 7d windows stay SPEC-literal (plain last-7d/prev-7d)
+  with an on-page caveat. Shifting windows back would fake "current" activity.
+  Same reason the Idea Check trend can show steep negatives — show, don't smooth.
 - Upstream answers browser `fetch` with `Access-Control-Allow-Origin: *, *`
   (duplicated) → browser blocks the response. SPEC §5 "CORS-open" assumption
   does not hold as-is.

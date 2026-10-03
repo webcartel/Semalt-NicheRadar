@@ -20,3 +20,13 @@ export function last30Windows(now = new Date()) {
     previous: { from: toISODate(new Date(t - 60 * day)), to: toISODate(new Date(t - 30 * day)) },
   }
 }
+
+/** Heatmap windows (SPEC §15): plain last-7d vs previous-7d. */
+export function last7Windows(now = new Date()) {
+  const day = 24 * 3600 * 1000
+  const t = now.getTime()
+  return {
+    current: { from: toISODate(new Date(t - 7 * day)), to: toISODate(new Date(t)) },
+    previous: { from: toISODate(new Date(t - 14 * day)), to: toISODate(new Date(t - 7 * day)) },
+  }
+}

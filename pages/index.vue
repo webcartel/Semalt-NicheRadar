@@ -115,12 +115,17 @@
         incomplete enrichment. DR can be unavailable for new domains.
       </p>
     </template>
+
+    <MarketPulse />
+    <MarketHeatmap />
   </main>
 </template>
 
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { useNicheRadar } from '../composables/useNicheRadar'
+import MarketHeatmap from '../components/MarketHeatmap.vue'
+import MarketPulse from '../components/MarketPulse.vue'
 
 const radar = useNicheRadar()
 const input = ref('')
