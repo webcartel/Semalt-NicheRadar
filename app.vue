@@ -1,3 +1,17 @@
+<script setup lang="ts">
+import { useLocale } from './composables/useLocale'
+
+const { locale, t, setLocale, initLocale } = useLocale()
+
+initLocale()
+
+useHead(() => ({
+  htmlAttrs: { lang: locale.value },
+  title: t('meta.title'),
+  meta: [{ name: 'description', content: t('meta.description') }],
+}))
+</script>
+
 <template>
   <div class="min-h-screen overflow-x-hidden">
     <header class="sticky top-0 z-10 border-b border-[#dce7f0]/80 bg-white/85 backdrop-blur">
@@ -14,9 +28,21 @@
         </NuxtLink>
         <div class="flex items-center gap-3">
           <span class="hidden rounded-full border border-[#dce7f0] bg-[#e8f1f7]/60 px-3 py-1 text-[11px] font-semibold text-[#0277bd] sm:inline">
-            FreeSerp Main index
+            {{ t('header.badge') }}
           </span>
           <span class="h-2 w-2 rounded-full bg-emerald-500" title="API status: operational" />
+          <div role="group" aria-label="Language" class="flex items-center overflow-hidden rounded-full border border-[#dce7f0] text-[11px] font-bold">
+            <button
+              v-for="l in (['en', 'uk'] as const)"
+              :key="l"
+              :aria-pressed="locale === l"
+              class="cursor-pointer px-2.5 py-1 uppercase transition-colors"
+              :class="locale === l ? 'bg-[#0288d1] text-white' : 'text-[#0277bd] hover:bg-[#e8f1f7]'"
+              @click="setLocale(l)"
+            >
+              {{ l }}
+            </button>
+          </div>
         </div>
       </div>
     </header>
@@ -26,13 +52,9 @@
     <footer class="border-t border-[#dce7f0]/80 bg-white">
       <div class="mx-auto max-w-[1200px] px-6 py-8">
         <p class="max-w-3xl text-xs leading-relaxed text-[#5b7186]">
-          Data: FreeSerp Main site index — a discovery index, not a complete market database.
-          `went_live` is when FreeSerp first confirmed the site reachable, not an official
-          launch date. Fresh records may have incomplete AI enrichment; DR can be
-          unavailable for new domains. NicheRadar shows data and transparent calculations —
-          conclusions are yours.
+          {{ t('footer.disclaimer') }}
         </p>
-        <p class="mt-3 text-xs font-medium text-[#5b7186]">NicheRadar · built on open FreeSerp discovery data</p>
+        <p class="mt-3 text-xs font-medium text-[#5b7186]">{{ t('footer.tagline') }}</p>
       </div>
     </footer>
   </div>
