@@ -16,7 +16,11 @@
       </thead>
       <tbody>
         <tr v-for="row in rows" :key="row.category" class="border-t border-neutral-100">
-          <td class="py-2 pr-4">{{ row.category }}</td>
+          <td class="py-2 pr-4">
+            <NuxtLink :to="`/niche/${encodeURIComponent(row.category)}`" class="underline decoration-neutral-300 underline-offset-2 hover:decoration-neutral-600">
+              {{ row.category }}
+            </NuxtLink>
+          </td>
           <td class="py-2 pr-4 text-right font-medium">{{ row.current ?? '—' }}</td>
           <td class="py-2 pr-4 text-right text-neutral-500">{{ row.previous ?? '—' }}</td>
           <td class="py-2 text-right font-medium">{{ formatChange(row.change) }}</td>

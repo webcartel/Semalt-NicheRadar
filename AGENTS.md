@@ -50,6 +50,8 @@ npm run probe      # node scripts/freeserp-probe.mjs — run BEFORE UI work (SPE
   `Access-Control-Allow-Origin: *, *` header. The app calls same-origin
   `buildProxyUrl()` → Nitro `server/api/freeserp.get.ts` (pure pass-through,
   no DB/auth). Direct `buildSitesUrl()` is for server/scripts only.
+- Deploy: Vercel/Netlify via `NITRO_PRESET=vercel|netlify` at build time
+  (proxy becomes a serverless function). GitHub Pages unsupported (static only).
 
 ## Architecture
 

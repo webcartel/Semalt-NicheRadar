@@ -46,6 +46,21 @@ npm run typecheck
 npm run build
 ```
 
+## Deploy (Vercel / Netlify)
+
+Browser calls go through the same-origin Nitro proxy
+(`server/api/freeserp.get.ts`), which deploys as a serverless function.
+No separate backend. Preset is picked at build time:
+
+```bash
+NITRO_PRESET=vercel npm run build   # → npx vercel deploy --prebuilt
+NITRO_PRESET=netlify npm run build  # → netlify deploy
+```
+
+GitHub Pages (static only) is NOT supported: the upstream answers browser
+fetch with a duplicated `Access-Control-Allow-Origin: *, *` header, so
+direct browser calls are blocked until FreeSerp fixes it.
+
 ## API limitations
 
 - `went_live` ≠ official launch date (first confirmed availability in index).
