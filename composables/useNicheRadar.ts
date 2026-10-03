@@ -34,6 +34,45 @@ export function useNicheRadar() {
   const query = ref('')
   const submittedQuery = ref('')
 
+  // SPEC §7: persist the last Idea Check result across reloads (same session).
+  const STORAGE_KEY = 'nicheradar:last-check'
+
+  function persist(q: string) {
+    try {
+      sessionStorage.setItem(STORAGE_KEY, JSON.stringify({
+        query: q,
+        matchingTotal: matchingTotal.value,
+        products: products.value,
+      }))
+    } catch {
+      // Best-effort, never fatal.
+    }
+  }
+
+  /** Restore P0 instantly; P1 analytics refetch in background. Returns query or null. */
+  function restore(): string | null {
+    try {
+      const raw = sessionStorage.getItem(STORAGE_KEY)
+      if (!raw) return null
+      const saved = JSON.parse(raw) as {
+        query?: string, matchingTotal?: number, products?: FreeSerpSiteResult[]
+      }
+      if (!saved.query || typeof saved.matchingTotal !== 'number' || !Array.isArray(saved.products)) {
+        return null
+      }
+      query.value = saved.query
+      submittedQuery.value = saved.query
+      matchingTotal.value = saved.matchingTotal
+      products.value = saved.products
+      void runTrend(saved.query)
+      void runDr(saved.query, saved.matchingTotal)
+      void runAiBuilt(saved.query, saved.matchingTotal)
+      return saved.query
+    } catch {
+      return null
+    }
+  }
+
   // P0 — main result.
   const searching = ref(false)
   const searchError = ref<string | null>(null)
@@ -144,6 +183,7 @@ export function useNicheRadar() {
       ])
       matchingTotal.value = matchRes.total
       products.value = listRes.results ?? []
+      persist(q)
       // P1 blocks run without blocking each other (pool caps at 3).
       void runTrend(q)
       void runDr(q, matchRes.total)
@@ -177,5 +217,6 @@ export function useNicheRadar() {
     aiBuiltPct,
     aiBuiltBySource,
     checkNiche,
+    restore,
   }
 }

@@ -122,13 +122,18 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { useNicheRadar } from '../composables/useNicheRadar'
 import MarketHeatmap from '../components/MarketHeatmap.vue'
 import MarketPulse from '../components/MarketPulse.vue'
 
 const radar = useNicheRadar()
 const input = ref('')
+
+onMounted(() => {
+  const saved = radar.restore()
+  if (saved) input.value = saved
+})
 
 const examples = [
   'AI resume builder',
