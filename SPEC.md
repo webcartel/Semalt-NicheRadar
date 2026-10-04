@@ -94,7 +94,12 @@ FreeSerp Main (`index=sites`) предназначен для поиска и а
 
 Backend не требуется.
 
-FreeSerp API является keyless и CORS-open, поэтому запросы можно выполнять из frontend-приложения. Основной endpoint — `GET /api.php`.
+FreeSerp API является keyless. Основной endpoint — `GET /api.php`.
+> Amendment 2026-10-04: SPEC §5 "CORS-open" assumption does not hold —
+> upstream answers browser `fetch` with a duplicated
+> `Access-Control-Allow-Origin: *, *` header, so direct browser calls are
+> blocked. Browser traffic goes through the same-origin Nitro proxy
+> (`server/api/freeserp.get.ts`); see `docs/API-NOTES.md`.
 
 ---
 

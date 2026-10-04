@@ -18,18 +18,23 @@ without subjective verdicts.
 - DR distribution (bucketed `total` counts + unknown)
 - AI-built signals (`ai=1` share + source breakdown)
 - matching AI products (top relevance results)
-- niche heatmap (per-category discovery)
+- niche heatmap (all-time niche size + AI-built share; card layout on mobile)
 - market pulse (`stats=1`)
+- EN/UA language switcher (header, persisted, browser-detected) + `/about` data page
 
 ## Tech
 
 Nuxt 4 / TypeScript / Tailwind / FreeSerp API. No backend, no auth, no DB.
-Keyless CORS-open `GET /api.php`, `native fetch`, `sessionStorage` cache.
+Keyless `GET /api.php`, `native fetch`, `sessionStorage` cache.
+Browser calls go through the same-origin Nitro proxy — the upstream
+answers browser fetch with a duplicated `Access-Control-Allow-Origin: *, *`
+header, so direct browser calls are blocked (see Deploy).
 
 ## Run
 
 ```bash
 npm install
+npx nuxi prepare   # generates .nuxt/tsconfig.json (required for typecheck)
 npm run dev
 ```
 

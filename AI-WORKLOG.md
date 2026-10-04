@@ -39,3 +39,45 @@ Category-sliced recent windows return ~0: AI enrichment lags discovery by
 per niche is currently unmeasurable — zeros, not a bug. Verified live:
 `ai=1` composes with `ai_categories`. 7d code path can return when
 enrichment catches up.
+
+## Mobile heatmap cards
+
+### Manually changed
+
+`MarketHeatmap` renders stacked cards below `sm` (no table squeeze, no
+horizontal scroll); table kept for `sm+` with `whitespace-nowrap` numerics.
+
+### Why
+
+Long niche names + fixed paddings + inline bar overlapped on 375px.
+Per UX guidance: card layout instead of squeezed table.
+
+## i18n EN/UK (custom subsystem)
+
+### Manually changed
+
+No `@nuxtjs/i18n` — `data/i18n/en.ts` + `uk.ts` (`uk: Record<I18nKey, string>`,
+typecheck enforces completeness), `composables/useLocale.ts` (browser detect,
+`localStorage`, `useHead` lang/title/meta sync), header EN | UA switcher.
+API data, categories in queries, and example queries stay English.
+Numbers/dates locale-formatted (`uk-UA`/`en-US`).
+
+### Why
+
+~50 static strings, state-only (no URL prefix), no-backend rule — a full
+i18n module is overkill. Numbers and labels are separate elements, so no
+pluralization is needed (UK labels use number-invariant phrasing).
+
+## Footer slim + /about
+
+### Manually changed
+
+Footer collapsed to one line (tagline + link); full disclaimer moved to
+static `pages/about.vue` (4 blocks, both languages). `footer.disclaimer`
+key removed from dictionaries.
+
+### Why
+
+Footer wall-of-text hurt readability; the 4 data-honesty points (index ≠
+market DB, `went_live` ≠ launch, enrichment/DR gaps, no verdicts) must stay
+reachable per product rules, just not always visible.

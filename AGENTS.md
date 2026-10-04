@@ -60,13 +60,16 @@ npm run probe      # node scripts/freeserp-probe.mjs — run BEFORE UI work (SPE
   `countByCategory`, `countAiBuilt`). Components must not build URLs.
 - Types: `types/freeserp.ts` (extend only from real responses).
 - State/cache: `composables/useFreeSerp.ts`, `useSessionCache.ts`
-  (key `freeserp:<normalized-url>`, TTL 5 min), `useNicheRadar.ts`.
+  (key `freeserp:<normalized-url>`, TTL 5 min), `useNicheRadar.ts`,
+  `useLocale.ts` (global `en`/`uk` state, `localStorage nicheradar:locale`).
+- Dictionaries: `data/i18n/en.ts`, `data/i18n/uk.ts` (`uk: Record<I18nKey, string>` —
+  typecheck enforces translation completeness). Visible labels: EN | UA.
 - Pure helpers: `utils/normalizeQuery.ts`, `utils/dateRanges.ts`
   (offset window T-33..T-3 / T-63..T-34), `utils/metrics.ts`
   (`discoveryChange` returns null when previous === 0).
 - Category snapshot: `data/aiCategories.ts` — fill only from `help=1`, never invent.
 - Pages: `pages/index.vue`, `pages/niche/[category].vue`
-  (may fold into query state per SPEC §6).
+  (may fold into query state per SPEC §6), `pages/about.vue` (static data notes).
 
 ## Wording (do not rephrase)
 
