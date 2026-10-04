@@ -40,7 +40,7 @@ useHead(() => ({
               :class="locale === l ? 'bg-[#0288d1] text-white' : 'text-[#0277bd] hover:bg-[#e8f1f7]'"
               @click="setLocale(l)"
             >
-              {{ l }}
+              {{ l === 'uk' ? 'UA' : 'EN' }}
             </button>
           </div>
         </div>
