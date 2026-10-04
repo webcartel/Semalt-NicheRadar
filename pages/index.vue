@@ -59,7 +59,7 @@
     </p>
 
     <template v-if="hasResult">
-      <section class="mt-0 pt-6">
+      <section ref="resultsRef" class="mt-0 scroll-mt-20 pt-6">
         <p class="text-xs font-semibold text-[#5b7186]">
           {{ t('results.for') }} <span class="font-bold text-[#101d2d]">“{{ radar.submittedQuery.value }}”</span>
         </p>
@@ -130,7 +130,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue'
+import { computed, nextTick, onMounted, ref } from 'vue'
 import { useLocale } from '../composables/useLocale'
 import { formatInt } from '../utils/locale'
 import { useNicheRadar } from '../composables/useNicheRadar'
@@ -143,6 +143,7 @@ import ProductCard from '../components/ProductCard.vue'
 const radar = useNicheRadar()
 const { t, tag } = useLocale()
 const input = ref('')
+const resultsRef = ref<HTMLElement | null>(null)
 
 const examples = [
   'AI resume builder',
@@ -158,12 +159,21 @@ const emptyResult = computed(
 const searchErrorText = computed(() => radar.searchError.value ? t(radar.searchError.value) : null)
 
 function onSubmit() {
-  void radar.checkNiche(input.value)
+  void runCheck(input.value)
 }
 
 function runExample(ex: string) {
   input.value = ex
-  void radar.checkNiche(ex)
+  void runCheck(ex)
+}
+
+async function runCheck(query: string) {
+  await radar.checkNiche(query)
+  await nextTick()
+  const el = resultsRef.value
+  if (!el) return
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  el.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'start' })
 }
 
 function formatPct(v: number | null): string {
