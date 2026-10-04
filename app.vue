@@ -51,10 +51,11 @@ useHead(() => ({
 
     <footer class="border-t border-[#dce7f0]/80 bg-white">
       <div class="mx-auto max-w-[1200px] px-6 py-8">
-        <p class="max-w-3xl text-xs leading-relaxed text-[#5b7186]">
-          {{ t('footer.disclaimer') }}
+        <p class="text-xs font-medium text-[#5b7186]">
+          {{ t('footer.tagline') }}
+          <span aria-hidden="true"> · </span>
+          <NuxtLink to="/about" class="font-bold text-[#0288d1] transition-colors hover:text-[#0277bd]">{{ t('footer.about') }}</NuxtLink>
         </p>
-        <p class="mt-3 text-xs font-medium text-[#5b7186]">{{ t('footer.tagline') }}</p>
       </div>
     </footer>
   </div>
